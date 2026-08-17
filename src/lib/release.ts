@@ -14,7 +14,7 @@ export async function getLatestRelease(): Promise<{ url: string; version: string
   try {
     const response = await fetch(`https://api.github.com/repos/${REPOSITORY}/releases/latest`, {
       headers: { Accept: "application/vnd.github+json" },
-      next: { revalidate: 3600 },
+      next: { revalidate: 900 },
     });
 
     if (!response.ok) throw new Error(`GitHub returned ${response.status}`);
