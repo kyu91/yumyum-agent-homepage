@@ -8,7 +8,7 @@ export type Copy = {
   nav: { ariaLabel: string; howItWorks: string; agents: string; privacy: string; langAriaLabel: string; githubLabel: string; downloadLabel: string };
   hero: {
     titleTop: string; titleAccent: string; subtitle: string; cta: string; versionSuffix: string;
-    requirements: string; install: Triple<string>; localBadge: string; windowsNote: string;
+    requirements: string; install: Triple<string>; localBadge: string; videoOpen: string; videoClose: string; windowsNote: string;
   };
   howItWorks: {
     eyebrow: string; titleTop: string; titleBottom: string; lead: string;
@@ -17,7 +17,7 @@ export type Copy = {
   };
   agents: {
     eyebrow: string; titleTop: string; titleAccent: string; lead: string;
-    details: Quad<string>; disclaimer: string;
+    disclaimer: string;
   };
   demo: {
     eyebrow: string; titleTop: string; titleAccent: string; lead: string;
@@ -63,7 +63,9 @@ export const copy = {
         "2. 처음 실행이 막히면 시스템 설정 → 개인정보 보호 및 보안으로 이동합니다.",
         "3. “Open Anyway”를 눌러 실행합니다.",
       ],
-      localBadge: "local CLI 연결",
+      localBadge: "실제 사용 화면",
+      videoOpen: "소개 영상 크게 보기",
+      videoClose: "영상 닫기",
       windowsNote: "Windows 버전 개발 중",
     },
     howItWorks: {
@@ -87,7 +89,6 @@ export const copy = {
       titleTop: "로그인은 각자,",
       titleAccent: "대화는 한곳에서.",
       lead: "YumYum Agent는 설치와 로그인에 관여하지 않습니다. 사용자가 준비한 로컬 CLI에 연결합니다.",
-      details: ["ACP v1", "opencode run --pure --format json", "ChatGPT 로그인 필요 · read-only sandbox", "plan permission mode"],
       disclaimer: "각 CLI는 사용자가 별도로 설치하고 로그인해야 합니다. 이름과 상표는 호환성 설명을 위한 것이며, 후원이나 보증을 뜻하지 않습니다.",
     },
     demo: {
@@ -158,7 +159,9 @@ export const copy = {
         "2. If the first launch is blocked, go to System Settings → Privacy & Security.",
         "3. Click \"Open Anyway\" to launch it.",
       ],
-      localBadge: "local CLI connected",
+      localBadge: "Actual app screen",
+      videoOpen: "Play intro video full size",
+      videoClose: "Close video",
       windowsNote: "Windows version in development",
     },
     howItWorks: {
@@ -182,7 +185,6 @@ export const copy = {
       titleTop: "Sign in separately,",
       titleAccent: "chat in one place.",
       lead: "YumYum Agent does not handle installing or signing in. It connects to the local CLIs you set up yourself.",
-      details: ["ACP v1", "opencode run --pure --format json", "ChatGPT sign-in required · read-only sandbox", "plan permission mode"],
       disclaimer: "You install and sign in to each CLI separately. Names and trademarks are used only to describe compatibility and do not imply sponsorship or endorsement.",
     },
     demo: {

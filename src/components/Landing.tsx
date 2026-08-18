@@ -4,6 +4,8 @@ import Image from "next/image";
 import { copy, type Locale } from "@/content/copy";
 import { getLatestRelease } from "@/lib/release";
 import PetFeedDemo, { type PetFeedVariant } from "@/components/pet-demo/PetFeedDemo";
+import HeroVideo from "@/components/HeroVideo";
+import AgentPetIcon from "@/components/AgentPetIcon";
 
 const steps = [
   { number: "01", label: "RIGHT CLICK", tone: "bg-peach" },
@@ -12,12 +14,7 @@ const steps = [
   { number: "04", label: "NATIVE CHAT", tone: "bg-coral" },
 ] as const;
 
-const agents = [
-  { name: "Hermes", icon: "/images/agent-hermes.png" },
-  { name: "OpenCode", icon: "/images/agent-opencode.png" },
-  { name: "Codex", icon: "/images/agent-codex.png" },
-  { name: "Claude Code", icon: "/images/agent-claude-code.png" },
-] as const;
+const agents = [{ name: "Hermes" }, { name: "OpenCode" }, { name: "Codex" }, { name: "Claude Code" }] as const;
 
 const clips = (["clipboard", "file-drop", "ask"] as const satisfies readonly PetFeedVariant[]).map((name) => ({
   name,
@@ -55,6 +52,18 @@ export default async function Landing({ locale }: { locale: Locale }) {
   // Latin ascent/descent in this font stack is taller than Hangul's, so leading-tight
   // (1.25) reads looser in English than Korean at the same value — pull it in to match.
   const heroLeading = locale === "ko" ? "leading-tight" : "leading-[1.02]";
+
+  function withEasedPunct(text: string) {
+    const match = text.match(/^(.+)([,.])$/);
+    if (!match) return text;
+    const ease = locale === "ko" ? "ml-[0.085em]" : "ml-[0.02em]";
+    return (
+      <>
+        {match[1]}
+        <span className={ease}>{match[2]}</span>
+      </>
+    );
+  }
 
   function InstallNote() {
     return (
@@ -121,15 +130,15 @@ export default async function Landing({ locale }: { locale: Locale }) {
       <section className="relative overflow-hidden border-b border-line bg-cream" id="top">
         <div className="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[470px] opacity-70" />
 
-        <div className="relative mx-auto grid max-w-6xl items-center gap-14 px-6 pb-20 pt-10 sm:pb-28 lg:grid-cols-[1fr_0.9fr] lg:gap-20 lg:px-8 lg:pt-16">
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-10 sm:pb-28 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16 lg:px-8 lg:pt-16">
           <div>
             <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.22em] text-orange">macOS menu bar app</p>
-            <h1 className={`max-w-xl text-[clamp(3.2rem,7vw,6.4rem)] font-black text-brown ${heroLeading} ${trackXl}`}>
-              {t.hero.titleTop}
+            <h1 className={`max-w-md text-[clamp(2.6rem,5.2vw,4.6rem)] font-black text-brown ${heroLeading} ${trackXl}`}>
+              {withEasedPunct(t.hero.titleTop)}
               <br />
-              <span className="text-orange">{t.hero.titleAccent}</span>
+              <span className="text-orange">{withEasedPunct(t.hero.titleAccent)}</span>
             </h1>
-            <p className="mt-8 max-w-lg text-[17px] leading-8 tracking-[-0.02em] text-muted sm:text-[19px]">{t.hero.subtitle}</p>
+            <p className="mt-7 max-w-sm text-[16px] leading-7 tracking-[-0.02em] text-muted sm:text-[17px]">{t.hero.subtitle}</p>
             <div className="mt-9 flex flex-wrap items-center gap-4">
               <a
                 className="inline-flex items-center gap-3 rounded-full bg-brown px-6 py-3.5 text-[14px] font-bold text-surface shadow-lg shadow-brown/15 transition-transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:ring-offset-cream"
@@ -149,41 +158,21 @@ export default async function Landing({ locale }: { locale: Locale }) {
             </div>
           </div>
 
-          <div className="relative mx-auto w-full max-w-[480px] lg:justify-self-end">
-            <div className="absolute -right-5 top-6 h-24 w-24 rounded-full bg-butter/70 blur-2xl" />
-            <div className="relative rounded-[2rem] border border-brown/10 bg-orange p-3 shadow-2xl shadow-orange/20">
-              <div className="rounded-[1.45rem] border border-white/30 bg-[#f7e9d8] p-5 sm:p-7">
-                <div className="flex items-center justify-between text-[10px] font-bold uppercase tracking-[0.18em] text-brown/50">
-                  <span>YumYum desktop</span>
-                  <span className="inline-flex items-center gap-1.5"><i className="h-1.5 w-1.5 rounded-full bg-coral" /> listening</span>
+          <div className="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none lg:justify-self-end">
+            <div className="aspect-[728/540] overflow-hidden rounded-[1.75rem] border border-line bg-brown/5 shadow-2xl shadow-brown/10">
+              {introClip.ready ? (
+                <HeroVideo src={introClip.src} openLabel={t.hero.videoOpen} closeLabel={t.hero.videoClose} />
+              ) : (
+                <div className="flex h-full flex-col items-center justify-center gap-3 bg-white/40">
+                  <Image src="/images/yumyum-mascot.png" alt="" width={1024} height={1024} className="h-16 w-auto opacity-40" priority />
+                  <span className="text-[12px] font-bold text-brown/50">{t.demo.placeholder}</span>
                 </div>
-                <div className="relative mt-8 h-[330px] sm:h-[360px]">
-                  {introClip.ready ? (
-                    <video
-                      className="h-full w-full rounded-[1.1rem] object-cover"
-                      src={introClip.src}
-                      controls
-                      preload="metadata"
-                      playsInline
-                    />
-                  ) : (
-                    <div className="flex h-full flex-col items-center justify-center gap-3 rounded-[1.1rem] border border-dashed border-brown/25 bg-white/40">
-                      <Image src="/images/yumyum-mascot.png" alt="" width={1024} height={1024} className="h-16 w-auto opacity-40" priority />
-                      <span className="text-[12px] font-bold text-brown/50">{t.demo.placeholder}</span>
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-wrap gap-2 border-t border-brown/10 pt-4 text-[11px] font-bold text-brown/65">
-                  <span className="rounded-full bg-white/60 px-3 py-1.5">capture</span>
-                  <span className="rounded-full bg-white/60 px-3 py-1.5">file</span>
-                  <span className="rounded-full bg-white/60 px-3 py-1.5">chat</span>
-                </div>
-              </div>
+              )}
             </div>
-            <div className="absolute -bottom-6 -left-4 rounded-2xl border border-brown/10 bg-surface px-4 py-3 text-[12px] font-bold text-brown shadow-xl shadow-brown/10 sm:-left-12">
-              <span className="mr-2 inline-block h-2 w-2 rounded-full bg-coral" />
+            <p className="mt-4 flex items-center gap-2 text-[12px] font-bold text-muted">
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-coral" />
               {t.hero.localBadge}
-            </div>
+            </p>
           </div>
         </div>
       </section>
@@ -263,15 +252,10 @@ export default async function Landing({ locale }: { locale: Locale }) {
             <p className="max-w-sm text-[14px] leading-6 text-surface/65">{t.agents.lead}</p>
           </div>
           <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {agents.map((agent, i) => (
+            {agents.map((agent) => (
               <article className="rounded-[1.35rem] border border-surface/15 bg-surface/[0.08] p-4" key={agent.name}>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-surface">
-                    <Image src={agent.icon} alt="" width={28} height={28} className="h-7 w-7 object-contain" />
-                  </div>
-                  <h3 className="text-[16px] font-black tracking-[-0.03em]">{agent.name}</h3>
-                </div>
-                <p className="mt-5 min-h-12 text-[12px] leading-5 text-surface/65">{t.agents.details[i]}</p>
+                <AgentPetIcon agent={agent.name} className="mx-auto aspect-square w-2/3" />
+                <h3 className="mt-4 text-center text-[16px] font-black tracking-[-0.03em]">{agent.name}</h3>
               </article>
             ))}
           </div>
