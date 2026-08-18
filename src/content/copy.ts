@@ -8,7 +8,7 @@ export type Copy = {
   nav: { ariaLabel: string; howItWorks: string; agents: string; privacy: string; langAriaLabel: string; githubLabel: string; downloadLabel: string };
   hero: {
     titleTop: string; titleAccent: string; subtitle: string; cta: string; versionSuffix: string;
-    requirements: string; install: Triple<string>; localBadge: string;
+    requirements: string; install: Triple<string>; localBadge: string; windowsNote: string;
   };
   howItWorks: {
     eyebrow: string; titleTop: string; titleBottom: string; lead: string;
@@ -58,6 +58,7 @@ export const copy = {
         "3. “Open Anyway”를 눌러 실행합니다.",
       ],
       localBadge: "local CLI 연결",
+      windowsNote: "Windows 버전 개발 중",
     },
     howItWorks: {
       eyebrow: "작동 방식",
@@ -146,6 +147,7 @@ export const copy = {
         "3. Click \"Open Anyway\" to launch it.",
       ],
       localBadge: "local CLI connected",
+      windowsNote: "Windows version in development",
     },
     howItWorks: {
       eyebrow: "How it works",

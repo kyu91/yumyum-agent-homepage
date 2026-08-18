@@ -138,7 +138,10 @@ export default async function Landing({ locale }: { locale: Locale }) {
               {release.version ? <span className="rounded-full border border-line bg-surface px-3 py-2 text-[12px] font-bold text-orange">{release.version} {t.hero.versionSuffix}</span> : null}
             </div>
             {InstallNote()}
-            <p className="mt-6 text-[12px] font-semibold tracking-[0.02em] text-muted">{t.hero.requirements}</p>
+            <div className="mt-6 flex flex-wrap items-center gap-2.5">
+              <p className="text-[12px] font-semibold tracking-[0.02em] text-muted">{t.hero.requirements}</p>
+              <span className="rounded-full border border-line bg-surface px-2.5 py-1 text-[11px] font-bold text-muted">{t.hero.windowsNote}</span>
+            </div>
           </div>
 
           <div className="relative mx-auto w-full max-w-[480px] lg:justify-self-end">

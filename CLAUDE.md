@@ -56,6 +56,7 @@ YumYum Agent는 이 CLI들의 로그인·네트워크·모델 처리에 관여�
 - Intel 하드웨어에서의 실제 검증, clean-machine Gatekeeper 동작은 아직 미검증 상태(README의 "Safety boundaries and limitations" 참고).
 - macOS 14 이상 필요.
 - 오픈소스, Apache License 2.0.
+- Windows 버전 개발 중(미출시) — 다운로드 링크나 지원 플랫폼으로 취급하지 말고, "개발 중" 정도로만 짧게 언급할 것.
 
 ### 링크
 
