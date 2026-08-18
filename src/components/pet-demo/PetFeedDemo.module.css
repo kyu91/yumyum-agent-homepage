@@ -1,6 +1,7 @@
 .stage {
   position: relative;
   overflow: hidden;
+  container-type: inline-size;
 }
 
 /* ---------- pet, anchored bottom-right like the real floating pet ---------- */
@@ -48,8 +49,8 @@
   width: 37.8%;
   background: #fffdf8;
   border: 2.5px solid #4b2a1e;
-  border-radius: 16px;
-  padding: 9px 14px;
+  border-radius: clamp(10px, 5cqw, 16px);
+  padding: clamp(5px, 2.8cqw, 9px) clamp(8px, 4.4cqw, 14px);
   box-shadow: 0 8px 18px -10px rgba(75, 42, 30, .45);
   opacity: 0;
   display: inline-grid;
@@ -74,7 +75,7 @@
 }
 .speech span {
   grid-area: 1 / 1;
-  font-size: 13px;
+  font-size: clamp(8.5px, 4.1cqw, 13px);
   font-weight: 800;
   color: #4b2a1e;
   white-space: normal;
@@ -168,8 +169,8 @@
   background: #fffdf8;
   border: 1.5px solid #eaded1;
   border-radius: 8px;
-  padding: 7px 11px;
-  font-size: 12px;
+  padding: clamp(4px, 2.2cqw, 7px) clamp(6px, 3.4cqw, 11px);
+  font-size: clamp(8px, 3.75cqw, 12px);
   font-weight: 700;
   animation-name: deskBob;
   animation-duration: 2.6s;
@@ -200,18 +201,18 @@
   background: #fffdf8;
   border: 2px solid #4b2a1e;
   border-radius: 10px;
-  padding: 7px 9px;
-  width: 104px;
+  padding: clamp(4px, 2.2cqw, 7px) clamp(5px, 2.8cqw, 9px);
+  width: clamp(64px, 34cqw, 104px);
 }
-.chip .chipText { font-size: 12px; font-weight: 700; color: #4b2a1e; margin-bottom: 5px; }
+.chip .chipText { font-size: clamp(8px, 3.75cqw, 12px); font-weight: 700; color: #4b2a1e; margin-bottom: clamp(2px, 1.6cqw, 5px); }
 .chip .key {
   display: inline-block;
   background: #4b2a1e;
   color: #fffdf8;
-  font-size: 10px;
+  font-size: clamp(7px, 3.1cqw, 10px);
   font-weight: 700;
   border-radius: 5px;
-  padding: 2px 6px;
+  padding: clamp(1px, .6cqw, 2px) clamp(3px, 1.9cqw, 6px);
 }
 
 .item { position: absolute; opacity: 0; }
@@ -242,7 +243,7 @@
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
 }
-.desktopFile svg, .fileIcon svg { width: 52px; height: 62px; display: block; }
+.desktopFile svg, .fileIcon svg { width: clamp(28px, 16cqw, 52px); height: clamp(33px, 19cqw, 62px); display: block; }
 @keyframes deskBob {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
@@ -270,7 +271,7 @@
   position: absolute;
   right: 1.8%;
   bottom: 44.8%;
-  width: 40.95%;
+  width: 62%;
   background: #fffdf8;
   border: 2.5px solid #4b2a1e;
   border-radius: 16px;
@@ -298,23 +299,23 @@
 }
 .transcript {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  padding: 10px 10px 8px;
-  min-height: 56px;
+  display: grid;
+  padding: clamp(5px, 3cqw, 10px) clamp(5px, 3cqw, 10px) clamp(4px, 2.4cqw, 8px);
+  min-height: clamp(14px, 9cqw, 24px);
 }
 .msg {
-  font-size: 11.5px;
+  grid-area: 1 / 1;
+  align-self: start;
+  font-size: clamp(7.5px, 3.5cqw, 11.5px);
   font-weight: 700;
   line-height: 1.35;
-  padding: 6px 9px;
-  border-radius: 10px;
-  max-width: 88%;
+  padding: clamp(3px, 1.8cqw, 6px) clamp(4px, 2.7cqw, 9px);
+  border-radius: clamp(6px, 3cqw, 10px);
+  max-width: 96%;
   opacity: 0;
 }
 .msgUser {
-  align-self: flex-end;
+  justify-self: end;
   background: #f2ece0;
   color: #4b2a1e;
   animation-name: s3userMsg;
@@ -324,7 +325,7 @@
   animation-delay: var(--delay, 0s);
 }
 .msgBot {
-  align-self: flex-start;
+  justify-self: start;
   background: #fff4e9;
   border: 1.5px solid #f3d9b8;
   color: #4b2a1e;
@@ -337,8 +338,8 @@
 .composer {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 7px 10px;
+  gap: clamp(3px, 1.9cqw, 6px);
+  padding: clamp(4px, 2.2cqw, 7px) clamp(5px, 3cqw, 10px);
   border-top: 1.5px solid #eaded1;
 }
 .composerText {
@@ -346,7 +347,7 @@
   display: inline-block;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 11.5px;
+  font-size: clamp(7.5px, 3.5cqw, 11.5px);
   font-weight: 700;
   color: #4b2a1e;
   border-right: 2px solid #4b2a1e;
@@ -357,7 +358,7 @@
   animation-iteration-count: infinite, infinite;
   animation-delay: var(--delay, 0s), var(--delay, 0s);
 }
-.composerHint { font-size: 11px; font-weight: 800; color: #746962; opacity: .7; }
+.composerHint { font-size: clamp(7px, 3.3cqw, 11px); font-weight: 800; color: #746962; opacity: .7; }
 
 @keyframes s3panel {
   0%, 4% { opacity: 0; transform: translateY(6px) scale(.96); }
@@ -375,11 +376,11 @@
 }
 @keyframes s3userMsg {
   0%, 29.9% { opacity: 0; transform: translateY(4px); }
-  33%, 92% { opacity: 1; transform: translateY(0); }
-  97%, 100% { opacity: 0; }
+  33%, 47.9% { opacity: 1; transform: translateY(0); }
+  50%, 100% { opacity: 0; }
 }
 @keyframes s3botMsg {
   0%, 49.9% { opacity: 0; transform: translateY(4px); }
-  52%, 92% { opacity: 1; transform: translateY(0); }
+  53%, 92% { opacity: 1; transform: translateY(0); }
   97%, 100% { opacity: 0; }
 }
