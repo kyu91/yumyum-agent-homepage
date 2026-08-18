@@ -1,0 +1,385 @@
+.stage {
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---------- pet, anchored bottom-right like the real floating pet ---------- */
+.pet {
+  position: absolute;
+  right: 3.15%;
+  bottom: 5.6%;
+  height: 35.2%;
+  aspect-ratio: 1;
+  animation-name: bob;
+  animation-duration: 3.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+.petScale {
+  width: 100%;
+  height: 100%;
+  transform-origin: 50% 100%;
+  animation-name: petGulp;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.pet svg { width: 100%; height: 100%; overflow: visible; display: block; }
+
+.pBody { fill: #e57a2d; stroke: #4b2a1e; stroke-width: 2; stroke-linejoin: round; }
+.pEar { fill: #f5b16f; }
+.pLine { stroke: #f2934a; stroke-width: 1.4; stroke-linecap: round; }
+.pCheek { fill: #f36f56; opacity: .72; }
+.pEye { fill: #4b2a1e; }
+.pMouthFill { fill: #4b2a1e; }
+.pTongue { fill: #f36f56; }
+.pTooth { fill: #fffdf8; stroke: #4b2a1e; stroke-width: .6; }
+
+/* ---------- signature tail speech bubble ---------- */
+.speech {
+  position: absolute;
+  right: 2.7%;
+  bottom: 44.8%;
+  width: 37.8%;
+  background: #fffdf8;
+  border: 2.5px solid #4b2a1e;
+  border-radius: 16px;
+  padding: 9px 14px;
+  box-shadow: 0 8px 18px -10px rgba(75, 42, 30, .45);
+  opacity: 0;
+  display: inline-grid;
+  animation-name: speechShow;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.speech::after {
+  content: "";
+  position: absolute;
+  right: 20px;
+  bottom: -9.5px;
+  width: 15px;
+  height: 15px;
+  background: #fffdf8;
+  border-right: 2.5px solid #4b2a1e;
+  border-bottom: 2.5px solid #4b2a1e;
+  border-bottom-right-radius: 4px;
+  transform: rotate(45deg);
+}
+.speech span {
+  grid-area: 1 / 1;
+  font-size: 13px;
+  font-weight: 800;
+  color: #4b2a1e;
+  white-space: normal;
+  line-height: 1.35;
+}
+@keyframes chewPulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.06); }
+}
+
+@keyframes speechShow {
+  0%, 45% { opacity: 0; transform: translateY(6px) scale(.94); }
+  50%, 90% { opacity: 1; transform: translateY(0) scale(1); }
+  96%, 100% { opacity: 0; transform: translateY(-4px) scale(.96); }
+}
+.yum {
+  display: inline-block;
+  animation-name: eatingTxt, chewPulse;
+  animation-duration: 5.2s, .55s;
+  animation-timing-function: ease-in-out, ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-delay: var(--delay, 0s), 0s;
+}
+@keyframes eatingTxt {
+  0%, 48% { opacity: 0; }
+  52%, 68% { opacity: 1; }
+  72%, 100% { opacity: 0; }
+}
+.reply {
+  animation-name: replyTxt;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes replyTxt {
+  0%, 70% { opacity: 0; }
+  75%, 90% { opacity: 1; }
+  96%, 100% { opacity: 0; }
+}
+
+/* ---------- shared mouth timeline: closed -> open (gulp) -> half (settle) -> closed ---------- */
+.mouthClosed {
+  animation-name: mClosed;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.mouthOpen {
+  animation-name: mOpen;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.mouthHalf {
+  animation-name: mHalf;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes mClosed {
+  0%, 37.9% { opacity: 1; } 38% { opacity: 0; }
+  47.9% { opacity: 0; } 48% { opacity: 1; }
+  100% { opacity: 1; }
+}
+@keyframes mOpen {
+  0%, 37.9% { opacity: 0; } 38% { opacity: 1; }
+  41.9% { opacity: 1; } 42% { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes mHalf {
+  0%, 41.9% { opacity: 0; } 42% { opacity: 1; }
+  47.9% { opacity: 1; } 48% { opacity: 0; }
+  100% { opacity: 0; }
+}
+@keyframes petGulp {
+  0%, 36% { transform: scaleY(1) scaleX(1); }
+  39% { transform: scaleY(.86) scaleX(1.1); }
+  45% { transform: scaleY(1.05) scaleX(.96); }
+  52%, 100% { transform: scaleY(1) scaleX(1); }
+}
+
+/* ---------- scene 1: text on the desktop gets selected + copied ---------- */
+.textsrc {
+  position: absolute;
+  top: 5.6%;
+  left: 2.7%;
+  background: #fffdf8;
+  border: 1.5px solid #eaded1;
+  border-radius: 8px;
+  padding: 7px 11px;
+  font-size: 12px;
+  font-weight: 700;
+  animation-name: deskBob;
+  animation-duration: 2.6s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.textsrc .sel { position: relative; display: inline-block; }
+.textsrc .highlight {
+  position: absolute;
+  inset: -1px -3px;
+  background: rgba(229, 122, 45, .32);
+  border-radius: 3px;
+  width: 0;
+  animation-name: selSweep;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.textsrc .txt { position: relative; z-index: 1; color: #4b2a1e; }
+@keyframes selSweep {
+  0%, 2% { width: 0; }
+  8% { width: 100%; }
+  10%, 100% { width: 100%; }
+}
+
+.chip {
+  background: #fffdf8;
+  border: 2px solid #4b2a1e;
+  border-radius: 10px;
+  padding: 7px 9px;
+  width: 104px;
+}
+.chip .chipText { font-size: 12px; font-weight: 700; color: #4b2a1e; margin-bottom: 5px; }
+.chip .key {
+  display: inline-block;
+  background: #4b2a1e;
+  color: #fffdf8;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 5px;
+  padding: 2px 6px;
+}
+
+.item { position: absolute; opacity: 0; }
+.s1Item {
+  top: 5.6%; left: 2.7%;
+  animation-name: s1fly;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes s1fly {
+  0%, 9.9% { opacity: 0; top: 5.6%; left: 2.7%; transform: scale(1) rotate(0deg); }
+  10% { opacity: 1; top: 5.6%; left: 2.7%; transform: scale(1) rotate(0deg); }
+  26% { opacity: 1; top: 48%; left: 66.25%; transform: scale(.8) rotate(4deg); }
+  38% { opacity: 1; top: 66%; left: 72.55%; transform: scale(.32) rotate(8deg); }
+  40% { opacity: 0; top: 71.2%; left: 75.47%; transform: scale(.05) rotate(10deg); }
+  100% { opacity: 0; }
+}
+
+/* ---------- scene 2: one of two desktop files gets dragged onto the pet ---------- */
+.desktopFile {
+  position: absolute;
+  top: 6.4%;
+  left: 15.75%;
+  animation-name: deskBob;
+  animation-duration: 2.6s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+.desktopFile svg, .fileIcon svg { width: 52px; height: 62px; display: block; }
+@keyframes deskBob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+.s2Item {
+  top: 6.4%; left: 3.15%;
+  animation-name: s2fly;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+@keyframes s2fly {
+  0% { opacity: 0; top: 6.4%; left: 3.15%; transform: scale(1) rotate(-12deg); }
+  6% { opacity: 1; top: 6.4%; left: 3.15%; transform: scale(1) rotate(-12deg); }
+  30% { opacity: 1; top: 45.6%; left: 66.7%; transform: scale(.75) rotate(2deg); }
+  38% { opacity: 1; top: 64.4%; left: 78.4%; transform: scale(.3) rotate(10deg); }
+  40% { opacity: 0; top: 69.6%; left: 81.32%; transform: scale(.05) rotate(14deg); }
+  100% { opacity: 0; }
+}
+
+/* ---------- scene 3: open chat window with a typed question ---------- */
+.chatwin {
+  position: absolute;
+  right: 1.8%;
+  bottom: 44.8%;
+  width: 40.95%;
+  background: #fffdf8;
+  border: 2.5px solid #4b2a1e;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 18px -10px rgba(75, 42, 30, .45);
+  opacity: 0;
+  animation-name: s3panel;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.chatwin::after {
+  content: "";
+  position: absolute;
+  right: 26px;
+  bottom: -9.5px;
+  width: 15px;
+  height: 15px;
+  background: #fffdf8;
+  border-right: 2.5px solid #4b2a1e;
+  border-bottom: 2.5px solid #4b2a1e;
+  border-bottom-right-radius: 4px;
+  transform: rotate(45deg);
+}
+.transcript {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 10px 10px 8px;
+  min-height: 56px;
+}
+.msg {
+  font-size: 11.5px;
+  font-weight: 700;
+  line-height: 1.35;
+  padding: 6px 9px;
+  border-radius: 10px;
+  max-width: 88%;
+  opacity: 0;
+}
+.msgUser {
+  align-self: flex-end;
+  background: #f2ece0;
+  color: #4b2a1e;
+  animation-name: s3userMsg;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.msgBot {
+  align-self: flex-start;
+  background: #fff4e9;
+  border: 1.5px solid #f3d9b8;
+  color: #4b2a1e;
+  animation-name: s3botMsg;
+  animation-duration: 5.2s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-delay: var(--delay, 0s);
+}
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-top: 1.5px solid #eaded1;
+}
+.composerText {
+  flex: 1;
+  display: inline-block;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #4b2a1e;
+  border-right: 2px solid #4b2a1e;
+  width: 0;
+  animation-name: s3typewriter, s3composerFade;
+  animation-duration: 5.2s, 5.2s;
+  animation-timing-function: steps(7, end), ease-in-out;
+  animation-iteration-count: infinite, infinite;
+  animation-delay: var(--delay, 0s), var(--delay, 0s);
+}
+.composerHint { font-size: 11px; font-weight: 800; color: #746962; opacity: .7; }
+
+@keyframes s3panel {
+  0%, 4% { opacity: 0; transform: translateY(6px) scale(.96); }
+  8%, 92% { opacity: 1; transform: translateY(0) scale(1); }
+  97%, 100% { opacity: 0; transform: translateY(-4px) scale(.97); }
+}
+@keyframes s3typewriter {
+  0%, 6% { width: 0; }
+  28% { width: 7ch; }
+  30%, 100% { width: 7ch; }
+}
+@keyframes s3composerFade {
+  0%, 29.9% { opacity: 1; }
+  30%, 100% { opacity: 0; }
+}
+@keyframes s3userMsg {
+  0%, 29.9% { opacity: 0; transform: translateY(4px); }
+  33%, 92% { opacity: 1; transform: translateY(0); }
+  97%, 100% { opacity: 0; }
+}
+@keyframes s3botMsg {
+  0%, 49.9% { opacity: 0; transform: translateY(4px); }
+  52%, 92% { opacity: 1; transform: translateY(0); }
+  97%, 100% { opacity: 0; }
+}

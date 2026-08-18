@@ -23,6 +23,12 @@ export type Copy = {
     eyebrow: string; titleTop: string; titleAccent: string; lead: string;
     clips: Triple<{ title: string; description: string }>;
     placeholder: string;
+    scenes: {
+      eating: string;
+      clipboard: { source: string; reply: string };
+      fileDrop: { reply: string };
+      ask: { question: string; answer: string };
+    };
   };
   privacy: {
     eyebrow: string; titleTop: string; titleBottom: string;
@@ -95,6 +101,12 @@ export const copy = {
         { title: "질문하고 답 받기", description: "짧은 질문을 보내면 말풍선으로 답이 돌아옵니다." },
       ],
       placeholder: "영상 준비 중",
+      scenes: {
+        eating: "냠.. 냠..",
+        clipboard: { source: "I love you", reply: "\"널 사랑해\"로 번역할 수 있습니다." },
+        fileDrop: { reply: "이 이미지는 강아지 사진입니다." },
+        ask: { question: "너는 누구니?", answer: "나는 yumyum이야!" },
+      },
     },
     privacy: {
       eyebrow: "프라이버시",
@@ -184,6 +196,12 @@ export const copy = {
         { title: "Ask a question", description: "Send a short question and the answer comes back in a speech bubble." },
       ],
       placeholder: "Video coming soon",
+      scenes: {
+        eating: "Yum... yum..",
+        clipboard: { source: "널 사랑해", reply: "I can translate this as \"I love you.\"" },
+        fileDrop: { reply: "This is a photo of a dog." },
+        ask: { question: "Who are you?", answer: "I'm yumyum!" },
+      },
     },
     privacy: {
       eyebrow: "Privacy",

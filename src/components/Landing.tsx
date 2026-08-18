@@ -3,6 +3,7 @@ import path from "node:path";
 import Image from "next/image";
 import { copy, type Locale } from "@/content/copy";
 import { getLatestRelease } from "@/lib/release";
+import PetFeedDemo, { type PetFeedVariant } from "@/components/pet-demo/PetFeedDemo";
 
 const steps = [
   { number: "01", label: "RIGHT CLICK", tone: "bg-peach" },
@@ -18,7 +19,8 @@ const agents = [
   { name: "Claude Code", icon: "/images/agent-claude-code.png" },
 ] as const;
 
-const clips = (["clipboard", "file-drop", "ask"] as const).map((name) => ({
+const clips = (["clipboard", "file-drop", "ask"] as const satisfies readonly PetFeedVariant[]).map((name) => ({
+  name,
   src: `/videos/${name}.mp4`,
   ready: existsSync(path.join(process.cwd(), "public", "videos", `${name}.mp4`)),
 }));
@@ -234,10 +236,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                     playsInline
                   />
                 ) : (
-                  <div className="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-[1.1rem] border border-dashed border-line bg-cream">
-                    <Image src="/images/yumyum-mascot.png" alt="" width={1024} height={1024} className="h-16 w-auto opacity-40" />
-                    <span className="text-[12px] font-bold text-muted">{t.demo.placeholder}</span>
-                  </div>
+                  <PetFeedDemo variant={clip.name} locale={locale} delaySeconds={i * -1.75} />
                 )}
                 <h3 className={`mt-5 text-[17px] font-black text-brown ${trackSm}`}>{t.demo.clips[i].title}</h3>
                 <p className="mt-2 text-[14px] leading-6 text-muted">{t.demo.clips[i].description}</p>
