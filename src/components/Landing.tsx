@@ -112,7 +112,10 @@ export default async function Landing({ locale }: { locale: Locale }) {
   }
 
   function Hero() {
-    const fileDropClip = clips.find((clip) => clip.src === "/videos/file-drop.mp4");
+    const introClip = {
+      src: `/videos/intro-${locale}.mp4`,
+      ready: existsSync(path.join(process.cwd(), "public", "videos", `intro-${locale}.mp4`)),
+    };
 
     return (
       <section className="relative overflow-hidden border-b border-line bg-cream" id="top">
@@ -155,10 +158,10 @@ export default async function Landing({ locale }: { locale: Locale }) {
                   <span className="inline-flex items-center gap-1.5"><i className="h-1.5 w-1.5 rounded-full bg-coral" /> listening</span>
                 </div>
                 <div className="relative mt-8 h-[330px] sm:h-[360px]">
-                  {fileDropClip?.ready ? (
+                  {introClip.ready ? (
                     <video
                       className="h-full w-full rounded-[1.1rem] object-cover"
-                      src={fileDropClip.src}
+                      src={introClip.src}
                       controls
                       preload="metadata"
                       playsInline
