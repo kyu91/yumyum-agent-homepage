@@ -70,7 +70,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
       <div className="mt-5 border-l-2 border-orange/50 pl-4 text-[12px] leading-6 text-muted">
         <p>{t.hero.install[0]}</p>
         <p>{t.hero.install[1]}</p>
-        <p>{t.hero.install[2]}</p>
+        <p className="mt-3 border-t border-line pt-3 text-[11px] leading-5">{t.hero.releaseVerification}</p>
       </div>
     );
   }

@@ -8,7 +8,7 @@ export type Copy = {
   nav: { ariaLabel: string; howItWorks: string; agents: string; privacy: string; langAriaLabel: string; githubLabel: string; downloadLabel: string };
   hero: {
     titleTop: string; titleAccent: string; subtitle: string; cta: string; versionSuffix: string;
-    requirements: string; install: Triple<string>; localBadge: string; videoOpen: string; videoClose: string; windowsNote: string;
+    requirements: string; install: Pair<string>; releaseVerification: string; localBadge: string; videoOpen: string; videoClose: string; windowsNote: string;
   };
   howItWorks: {
     eyebrow: string; titleTop: string; titleBottom: string; lead: string;
@@ -56,13 +56,13 @@ export const copy = {
       titleAccent: "대화를 이어가세요.",
       subtitle: "화면 캡처나 파일을 화면 위의 펫에게 먹이면, 이미 로그인한 로컬 AI CLI로 전달하고 답을 네이티브 말풍선과 채팅으로 보여줍니다.",
       cta: "macOS용 DMG 받기",
-      versionSuffix: "최신 프리뷰",
-      requirements: "macOS 14+ · Apple Silicon / Intel 유니버설",
+      versionSuffix: "서명·공증 완료",
+      requirements: "macOS 14+ · arm64 + x86_64 유니버설 바이너리",
       install: [
         "1. DMG를 열고 YumYum.app을 응용 프로그램으로 옮깁니다.",
-        "2. 처음 실행이 막히면 시스템 설정 → 개인정보 보호 및 보안으로 이동합니다.",
-        "3. “Open Anyway”를 눌러 실행합니다.",
+        "2. 응용 프로그램 폴더에서 YumYum.app을 실행합니다.",
       ],
+      releaseVerification: "현재 릴리스는 Developer ID로 서명하고 Apple 공증을 받았으며, 공증 티켓을 DMG에 스테이플링했습니다. GitHub Actions에서 앱과 DMG의 spctl(Gatekeeper) 평가를 통과했습니다.",
       localBadge: "실제 사용 화면",
       videoOpen: "소개 영상 크게 보기",
       videoClose: "영상 닫기",
@@ -129,7 +129,7 @@ export const copy = {
       tagline: "오픈소스 macOS 앱 · Apache-2.0",
       attribution: "Mascot와 agent icon은 앱 레포에서 Apache-2.0 라이선스로 재사용했습니다.",
       attributionLink: "아이콘 출처와 권리 안내 ↗",
-      disclaimer: "Intel 하드웨어에서의 실행과 깨끗한 Mac에서의 Gatekeeper 동작은 아직 검증되지 않았습니다.",
+      disclaimer: "실제 Intel 하드웨어에서의 실행과 별도의 깨끗한 Mac에서 DMG를 다운로드·설치한 뒤 처음 실행하는 절차는 아직 검증되지 않았습니다.",
     },
     meta: {
       title: "YumYum Agent — 화면 위 펫과 로컬 AI 대화",
@@ -152,13 +152,13 @@ export const copy = {
       titleAccent: "keep the conversation going.",
       subtitle: "Feed a screen capture or a file to the pet on your desktop, and it hands them to the local AI CLI you are already signed in to — answers come back in a native speech bubble and chat.",
       cta: "Download the DMG for macOS",
-      versionSuffix: "latest preview",
-      requirements: "macOS 14+ · Apple Silicon / Intel universal",
+      versionSuffix: "signed & notarized",
+      requirements: "macOS 14+ · arm64 + x86_64 universal binary",
       install: [
         "1. Open the DMG and move YumYum.app into Applications.",
-        "2. If the first launch is blocked, go to System Settings → Privacy & Security.",
-        "3. Click \"Open Anyway\" to launch it.",
+        "2. Launch YumYum.app from the Applications folder.",
       ],
+      releaseVerification: "The current release is Developer ID signed and Apple-notarized, with the notarization ticket stapled to the DMG. In GitHub Actions, both the app and DMG passed spctl (Gatekeeper) assessment.",
       localBadge: "Actual app screen",
       videoOpen: "Play intro video full size",
       videoClose: "Close video",
@@ -225,7 +225,7 @@ export const copy = {
       tagline: "Open-source macOS app · Apache-2.0",
       attribution: "The mascot and agent icons are reused from the app repository under Apache-2.0.",
       attributionLink: "Icon sources and rights ↗",
-      disclaimer: "Running on Intel hardware and Gatekeeper behavior on a clean Mac have not been verified yet.",
+      disclaimer: "Actual execution on Intel hardware and first launch after downloading and installing the DMG on a separate clean Mac remain unverified.",
     },
     meta: {
       title: "YumYum Agent — chat with local AI through a desktop pet",

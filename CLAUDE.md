@@ -51,9 +51,9 @@ YumYum Agent는 이 CLI들의 로그인·네트워크·모델 처리에 관여�
 
 ### 배포 상태 (카피에서 과장하지 말아야 할 것)
 
-- 현재 배포: `kyu91/yumyum-agent` GitHub Releases의 macOS 유니버설(arm64 + x86_64) DMG. **미서명(Unsigned) 개발자 프리뷰 — Apple Developer ID 서명·공증 안 됨.** 설치 시 macOS Gatekeeper가 막으므로 "시스템 설정 → 개인정보 보호 및 보안 → Open Anyway" 안내가 필요. 카피에 "서명됨/notarized"라고 쓰지 말 것. 최신 버전은 레포 Releases 페이지에서 직접 확인 (이 문서에 버전 번호를 박아두지 않음 — 금방 stale해짐).
+- 현재 배포: `kyu91/yumyum-agent` GitHub Releases의 macOS 유니버설(arm64 + x86_64) DMG. **Apple Developer ID 서명 및 Apple 공증 완료.** GitHub 게시 전에 공증 티켓을 DMG에 스테이플링했으며, CI의 [GitHub Actions 실행 기록](https://github.com/kyu91/yumyum-agent/actions/runs/33165964764)에서 앱과 DMG 모두 `spctl`(Gatekeeper) 평가를 통과했다. 설치 카피에는 정상 실행 절차만 안내하고 Gatekeeper 우회 절차를 안내하지 말 것. 최신 버전은 레포 Releases 페이지에서 직접 확인한다.
 - App Store 배포·자동 업데이트 없음.
-- Intel 하드웨어에서의 실제 검증, clean-machine Gatekeeper 동작은 아직 미검증 상태(README의 "Safety boundaries and limitations" 참고).
+- 실제 Intel 하드웨어에서의 실행과 별도의 깨끗한 Mac에서 DMG를 다운로드·설치한 뒤 처음 실행하는 절차는 아직 미검증 상태(README의 "Safety boundaries and limitations" 참고).
 - macOS 14 이상 필요.
 - 오픈소스, Apache License 2.0.
 - Windows 버전 개발 중(미출시) — 다운로드 링크나 지원 플랫폼으로 취급하지 말고, "개발 중" 정도로만 짧게 언급할 것.
