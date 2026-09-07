@@ -313,6 +313,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
             <div className="flex gap-5 text-[13px] font-semibold">
               <a className="transition-colors hover:text-surface" href="https://github.com/kyu91/yumyum-agent" target="_blank" rel="noreferrer">Repository ↗</a>
               <a className="transition-colors hover:text-surface" href="https://github.com/kyu91/yumyum-agent/releases" target="_blank" rel="noreferrer">Releases ↗</a>
+              <a className="transition-colors hover:text-surface" href="https://haas.kr/posts/yumyum-agent-open-source-launch" target="_blank" rel="noreferrer">{t.footer.blogLabel}</a>
             </div>
           </div>
           <div className="border-t border-surface/10 pt-5 text-[11px] leading-5 text-surface/40">{t.footer.disclaimer}</div>

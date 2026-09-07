@@ -36,7 +36,7 @@ export type Copy = {
     soul: { title: string; before: string; after: string };
     bannerStrong: string; bannerRest: string;
   };
-  footer: { tagline: string; attribution: string; attributionLink: string; disclaimer: string };
+  footer: { tagline: string; attribution: string; attributionLink: string; blogLabel: string; disclaimer: string };
   meta: { title: string; description: string; ogDescription: string };
 };
 
@@ -129,6 +129,7 @@ export const copy = {
       tagline: "오픈소스 macOS 앱 · Apache-2.0",
       attribution: "Mascot와 agent icon은 앱 레포에서 Apache-2.0 라이선스로 재사용했습니다.",
       attributionLink: "아이콘 출처와 권리 안내 ↗",
+      blogLabel: "만든 이야기 ↗",
       disclaimer: "실제 Intel 하드웨어에서의 실행과 별도의 깨끗한 Mac에서 DMG를 다운로드·설치한 뒤 처음 실행하는 절차는 아직 검증되지 않았습니다.",
     },
     meta: {
@@ -225,6 +226,7 @@ export const copy = {
       tagline: "Open-source macOS app · Apache-2.0",
       attribution: "The mascot and agent icons are reused from the app repository under Apache-2.0.",
       attributionLink: "Icon sources and rights ↗",
+      blogLabel: "Build notes ↗",
       disclaimer: "Actual execution on Intel hardware and first launch after downloading and installing the DMG on a separate clean Mac remain unverified.",
     },
     meta: {
