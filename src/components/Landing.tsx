@@ -1,26 +1,12 @@
 import { existsSync } from "node:fs";
 import path from "node:path";
-import Image from "next/image";
 import { copy, type Locale } from "@/content/copy";
 import { getLatestRelease } from "@/lib/release";
-import PetFeedDemo, { type PetFeedVariant } from "@/components/pet-demo/PetFeedDemo";
+import FeedScene from "@/components/FeedScene";
 import HeroVideo from "@/components/HeroVideo";
 import AgentPetIcon from "@/components/AgentPetIcon";
 
-const steps = [
-  { number: "01", label: "RIGHT CLICK", tone: "bg-peach" },
-  { number: "02", label: "OPTION + S", tone: "bg-butter" },
-  { number: "03", label: "DRAG & DROP", tone: "bg-mint" },
-  { number: "04", label: "NATIVE CHAT", tone: "bg-coral" },
-] as const;
-
 const agents = [{ name: "Hermes" }, { name: "OpenCode" }, { name: "Codex" }, { name: "Claude Code" }] as const;
-
-const clips = (["clipboard", "file-drop", "ask"] as const satisfies readonly PetFeedVariant[]).map((name) => ({
-  name,
-  src: `/videos/${name}.mp4`,
-  ready: existsSync(path.join(process.cwd(), "public", "videos", `${name}.mp4`)),
-}));
 
 function GithubIcon({ className }: { className?: string }) {
   return (
@@ -38,59 +24,93 @@ function DownloadIcon({ className }: { className?: string }) {
   );
 }
 
+function ExternalLinkIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M6 4h6v6" />
+      <path d="M12 4 4 12" />
+    </svg>
+  );
+}
+
+/** A short display line rendered twice, offset and blended, to read as a misregistered riso
+ *  overprint: where the two plates cross, the blend darkens (or lightens, on ink grounds)
+ *  instead of one flat color merely casting an offset shadow of the other. */
+function Overprint({ children, className = "", dark = false }: { children: React.ReactNode; className?: string; dark?: boolean }) {
+  const blend = dark ? "mix-blend-screen" : "mix-blend-multiply";
+  return (
+    <span className={`relative isolate ${className}`}>
+      <span aria-hidden="true" className={`absolute inset-0 block translate-x-[-0.09em] translate-y-[0.07em] text-orange ${blend}`}>
+        {children}
+      </span>
+      <span className={`relative block text-blue ${blend}`}>{children}</span>
+    </span>
+  );
+}
+
+function Folio({ n, dark = false }: { n: string; dark?: boolean }) {
+  return (
+    <span className={`pointer-events-none absolute bottom-4 right-5 text-[11px] font-bold tabular-nums lg:bottom-6 lg:right-8 ${dark ? "text-paper/80" : "text-ink/65"}`}>
+      p.{n}
+    </span>
+  );
+}
+
+function StampTicket({ href, children, dark = false }: { href: string; children: React.ReactNode; dark?: boolean }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={`stamp-ticket inline-flex -rotate-1 items-center gap-3 px-6 py-3 text-[14px] font-bold transition-transform hover:rotate-0 hover:-translate-y-0.5 ${
+        dark ? "text-paper" : "text-ink"
+      }`}
+    >
+      {children}
+      <ExternalLinkIcon className="h-3.5 w-3.5" />
+    </a>
+  );
+}
+
 export default async function Landing({ locale }: { locale: Locale }) {
   const t = copy[locale];
   const release = await getLatestRelease();
 
-  // Negative tracking this tight only reads well on Hangul syllable blocks — Latin
-  // letterforms at the same value visually collide, so translated headings get a
-  // much lighter value in English.
-  const trackXl = locale === "ko" ? "tracking-[-0.085em]" : "tracking-[-0.02em]";
-  const trackLg = locale === "ko" ? "tracking-[-0.06em]" : "tracking-[-0.015em]";
-  const trackMd = locale === "ko" ? "tracking-[-0.04em]" : "tracking-[-0.01em]";
-  const trackSm = locale === "ko" ? "tracking-[-0.03em]" : "tracking-[-0.01em]";
-  // Latin ascent/descent in this font stack is taller than Hangul's, so leading-tight
-  // (1.25) reads looser in English than Korean at the same value — pull it in to match.
-  const heroLeading = locale === "ko" ? "leading-tight" : "leading-[1.02]";
+  // Bricolage Grotesque (English display) has real bold weights to reach for; Black Han
+  // Sans (Korean display) ships one weight that is already visually heavy, so asking the
+  // browser for 900 there would only synthesize a fake bold.
+  const headingWeight = locale === "ko" ? "font-normal" : "font-extrabold";
+  const heroSize = locale === "ko" ? "text-[clamp(2.4rem,15vw,9rem)]" : "text-[clamp(1.9rem,8vw,4.4rem)]";
+  const sectionHeadingSize = "text-[clamp(2.2rem,7vw,4.8rem)]";
 
-  function withEasedPunct(text: string) {
-    const match = text.match(/^(.+)([,.])$/);
-    if (!match) return text;
-    const ease = locale === "ko" ? "ml-[0.085em]" : "ml-[0.02em]";
-    return (
-      <>
-        {match[1]}
-        <span className={ease}>{match[2]}</span>
-      </>
-    );
-  }
-
-  function InstallNote() {
-    return (
-      <div className="mt-5 border-l-2 border-orange/50 pl-4 text-[12px] leading-6 text-muted">
-        <p>{t.hero.install[0]}</p>
-        <p>{t.hero.install[1]}</p>
-        <p className="mt-3 border-t border-line pt-3 text-[11px] leading-5">{t.hero.releaseVerification}</p>
-      </div>
-    );
-  }
+  const introClip = {
+    src: `/videos/intro-${locale}.mp4`,
+    ready: existsSync(path.join(process.cwd(), "public", "videos", `intro-${locale}.mp4`)),
+  };
 
   function Nav() {
     return (
-      <nav className="sticky top-0 z-50 border-b border-line bg-cream/95 backdrop-blur supports-[backdrop-filter]:bg-cream/80" aria-label={t.nav.ariaLabel}>
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
-          <a className="text-[17px] font-black tracking-[-0.04em] text-brown" href="#top">
+      <nav className="sticky top-0 z-50 border-b border-ink/15 bg-paper" aria-label={t.nav.ariaLabel}>
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 lg:px-8">
+          <a className="font-display text-[18px] font-normal tracking-[-0.02em] text-ink" href="#top">
             YumYum <span className="text-orange">Agent</span>
+            <span className="ml-3 hidden text-[11px] font-body font-bold uppercase tracking-[0.14em] text-muted sm:inline">{t.cover.tag}</span>
           </a>
           <div className="flex items-center gap-5">
-            <div className="hidden items-center gap-7 text-[13px] font-semibold text-muted sm:flex">
-              <a className="transition-colors hover:text-brown" href="#how-it-works">{t.nav.howItWorks}</a>
-              <a className="transition-colors hover:text-brown" href="#agents">{t.nav.agents}</a>
-              <a className="transition-colors hover:text-brown" href="#privacy">{t.nav.privacy}</a>
+            <div className="hidden items-center gap-6 text-[13px] font-bold text-muted lg:flex">
+              <a className="underline-offset-4 transition-colors hover:text-ink hover:underline" href="#how-it-works">
+                {t.nav.howItWorks}
+              </a>
+              <a className="underline-offset-4 transition-colors hover:text-ink hover:underline" href="#agents">
+                {t.nav.agents}
+              </a>
+              <a className="underline-offset-4 transition-colors hover:text-ink hover:underline" href="#privacy">
+                {t.nav.privacy}
+              </a>
             </div>
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5">
               <a
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-brown transition-colors hover:bg-cream"
+                className="inline-flex h-8 w-8 items-center justify-center border-2 border-ink text-ink transition-colors hover:bg-ink hover:text-paper"
                 href="https://github.com/kyu91/yumyum-agent"
                 target="_blank"
                 rel="noreferrer"
@@ -99,7 +119,7 @@ export default async function Landing({ locale }: { locale: Locale }) {
                 <GithubIcon className="h-4 w-4" />
               </a>
               <a
-                className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-line bg-surface text-brown transition-colors hover:bg-cream"
+                className="inline-flex h-8 w-8 items-center justify-center border-2 border-ink text-ink transition-colors hover:bg-ink hover:text-paper"
                 href={release.url}
                 target="_blank"
                 rel="noreferrer"
@@ -108,11 +128,17 @@ export default async function Landing({ locale }: { locale: Locale }) {
                 <DownloadIcon className="h-4 w-4" />
               </a>
             </div>
-            <div className="flex items-center gap-1.5 rounded-full border border-line bg-surface px-3 py-1.5 text-[12px] font-bold" aria-label={t.nav.langAriaLabel}>
+            <div className="flex items-center gap-1.5 text-[12px] font-bold" aria-label={t.nav.langAriaLabel}>
               {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
-              <a href="/" hrefLang="ko" aria-current={locale === "ko" ? "page" : undefined} className={locale === "ko" ? "text-brown" : "text-muted transition-colors hover:text-brown"}>KO</a>
-              <span className="text-line" aria-hidden="true">/</span>
-              <a href="/en" hrefLang="en" aria-current={locale === "en" ? "page" : undefined} className={locale === "en" ? "text-brown" : "text-muted transition-colors hover:text-brown"}>EN</a>
+              <a href="/" hrefLang="ko" aria-current={locale === "ko" ? "page" : undefined} className={locale === "ko" ? "text-ink underline underline-offset-4" : "text-muted transition-colors hover:text-ink"}>
+                KO
+              </a>
+              <span className="text-ink/30" aria-hidden="true">
+                /
+              </span>
+              <a href="/en" hrefLang="en" aria-current={locale === "en" ? "page" : undefined} className={locale === "en" ? "text-ink underline underline-offset-4" : "text-muted transition-colors hover:text-ink"}>
+                EN
+              </a>
             </div>
           </div>
         </div>
@@ -120,204 +146,262 @@ export default async function Landing({ locale }: { locale: Locale }) {
     );
   }
 
-  function Hero() {
-    const introClip = {
-      src: `/videos/intro-${locale}.mp4`,
-      ready: existsSync(path.join(process.cwd(), "public", "videos", `intro-${locale}.mp4`)),
-    };
-
+  function Cover() {
     return (
-      <section className="relative overflow-hidden border-b border-line bg-cream" id="top">
-        <div className="dot-grid pointer-events-none absolute inset-x-0 top-0 h-[470px] opacity-70" />
+      <section className="relative overflow-hidden border-b border-ink/15 bg-paper" id="top">
+        <div
+          className="halftone-orange pointer-events-none absolute inset-x-0 top-0 h-[60vh] opacity-70 [mask-image:linear-gradient(to_bottom,black,black_70%,transparent)] [-webkit-mask-image:linear-gradient(to_bottom,black,black_70%,transparent)]"
+          aria-hidden="true"
+        />
 
-        <div className="relative mx-auto grid max-w-6xl items-center gap-12 px-6 pb-20 pt-10 sm:pb-28 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16 lg:px-8 lg:pt-16">
-          <div>
-            <p className="mb-6 text-[11px] font-bold uppercase tracking-[0.22em] text-orange">macOS menu bar app</p>
-            <h1 className={`max-w-md text-[clamp(2.6rem,5.2vw,4.6rem)] font-black text-brown ${heroLeading} ${trackXl}`}>
-              {withEasedPunct(t.hero.titleTop)}
-              <br />
-              <span className="text-orange">{withEasedPunct(t.hero.titleAccent)}</span>
-            </h1>
-            <p className="mt-7 max-w-sm text-[16px] leading-7 tracking-[-0.02em] text-muted sm:text-[17px]">{t.hero.subtitle}</p>
-            <div className="mt-9 flex flex-wrap items-center gap-4">
-              <a
-                className="inline-flex items-center gap-3 rounded-full bg-brown px-6 py-3.5 text-[14px] font-bold text-surface shadow-lg shadow-brown/15 transition-transform hover:-translate-y-0.5 focus:outline-none focus:ring-2 focus:ring-orange focus:ring-offset-2 focus:ring-offset-cream"
-                href={release.url}
-                target="_blank"
-                rel="noreferrer"
-              >
-                {t.hero.cta}
-                <span aria-hidden="true">↗</span>
-              </a>
-              {release.version ? <span className="rounded-full border border-line bg-surface px-3 py-2 text-[12px] font-bold text-orange">{release.version} {t.hero.versionSuffix}</span> : null}
-            </div>
-            {InstallNote()}
-            <div className="mt-6 flex flex-wrap items-center gap-2.5">
-              <p className="text-[12px] font-semibold tracking-[0.02em] text-muted">{t.hero.requirements}</p>
-              <span className="rounded-full border border-line bg-surface px-2.5 py-1 text-[11px] font-bold text-muted">{t.hero.windowsNote}</span>
-            </div>
-          </div>
+        {/* Mobile order: headline, then the feed scene, then subtitle and CTA — so the
+            interaction sits right under the headline instead of after a wall of copy.
+            Desktop: two columns, headline/subtitle/CTA stacked left, scene filling the right. */}
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-8 px-5 pb-20 pt-12 lg:grid lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-x-16 lg:gap-y-10 lg:px-8 lg:pb-28 lg:pt-20">
+          <h1 className={`font-display ${headingWeight} ${heroSize} leading-[0.94] tracking-[-0.02em] lg:col-start-1 lg:row-start-1`}>
+            <Overprint>{t.cover.titleTop}</Overprint>
+            <Overprint className="mt-1">{t.cover.titleAccent}</Overprint>
+          </h1>
 
-          <div className="relative mx-auto w-full max-w-xl lg:mx-0 lg:max-w-none lg:justify-self-end">
-            <div className="aspect-[728/540] overflow-hidden rounded-[1.75rem] border border-line bg-brown/5 shadow-2xl shadow-brown/10">
-              {introClip.ready ? (
-                <HeroVideo src={introClip.src} openLabel={t.hero.videoOpen} closeLabel={t.hero.videoClose} />
-              ) : (
-                <div className="flex h-full flex-col items-center justify-center gap-3 bg-white/40">
-                  <Image src="/images/yumyum-mascot.png" alt="" width={1024} height={1024} className="h-16 w-auto opacity-40" priority />
-                  <span className="text-[12px] font-bold text-brown/50">{t.demo.placeholder}</span>
-                </div>
-              )}
-            </div>
-            <p className="mt-4 flex items-center gap-2 text-[12px] font-bold text-muted">
-              <span className="inline-block h-1.5 w-1.5 rounded-full bg-coral" />
-              {t.hero.localBadge}
-            </p>
+          {/* min-w-0: a grid item's automatic minimum size defaults to its content's
+              min-content, which lets this column refuse to shrink below the scene's preferred
+              width and push the track past the container edge. Overriding it lets the pet
+              slip's own max-width (below) be the thing that actually gives way. */}
+          <FeedScene copy={t.feed} className="lg:col-start-2 lg:row-start-1 lg:row-span-3 lg:min-w-0" />
+
+          <p className="max-w-sm text-[16px] leading-7 text-ink sm:text-[17px] lg:col-start-1 lg:row-start-2">{t.cover.subtitle}</p>
+
+          <div className="flex flex-wrap items-center gap-4 lg:col-start-1 lg:row-start-3">
+            <StampTicket href={release.url}>{t.cover.cta}</StampTicket>
+            {release.version ? (
+              <span className="text-[12px] font-bold text-blue">
+                {release.version} · {t.cover.ctaSigned}
+              </span>
+            ) : null}
           </div>
         </div>
+
+        <Folio n="01" />
+      </section>
+    );
+  }
+
+  function Watch() {
+    return (
+      <section className="relative border-b border-ink/15 bg-paper" id="watch">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-28">
+          <h2 className={`font-display ${headingWeight} ${sectionHeadingSize} leading-[0.95]`}>
+            <Overprint>{t.video.heading}</Overprint>
+          </h2>
+          <p className="mt-6 max-w-md text-[16px] leading-7 text-ink">{t.video.lead}</p>
+
+          <div className="mt-12 aspect-[728/540] w-full max-w-3xl rotate-1 border-2 border-ink lg:mr-0 lg:ml-auto lg:max-w-[46rem]">
+            {introClip.ready ? (
+              <HeroVideo src={introClip.src} openLabel={t.video.openLabel} closeLabel={t.video.closeLabel} />
+            ) : (
+              <div className="flex h-full items-center justify-center bg-paper">
+                <span className="text-[13px] font-bold text-muted">{t.video.placeholder}</span>
+              </div>
+            )}
+          </div>
+        </div>
+        <Folio n="02" />
       </section>
     );
   }
 
   function HowItWorks() {
     return (
-      <section className="mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32" id="how-it-works">
-        <div className="max-w-2xl">
-          <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-orange">{t.howItWorks.eyebrow}</p>
-          <h2 className={`text-4xl font-black leading-tight text-brown sm:text-5xl ${trackLg}`}>{t.howItWorks.titleTop}<br />{t.howItWorks.titleBottom}</h2>
-          <p className="mt-5 text-[16px] leading-7 text-muted">{t.howItWorks.lead}</p>
-        </div>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step, i) => (
-            <article className="rounded-[1.5rem] border border-line bg-surface p-5" key={step.number}>
-              <div className="flex items-start justify-between gap-4">
-                <span className={`inline-flex h-11 w-11 items-center justify-center rounded-2xl ${step.tone} text-[12px] font-black text-brown`}>{step.number}</span>
-                <span className="pt-2 text-right text-[9px] font-bold tracking-[0.12em] text-muted">{step.label}</span>
-              </div>
-              <h3 className={`mt-10 text-[19px] font-black text-brown ${trackMd}`}>{t.howItWorks.steps[i].title}</h3>
-              <p className="mt-3 text-[14px] leading-6 text-muted">{t.howItWorks.steps[i].description}</p>
-            </article>
-          ))}
-        </div>
-        <div className="mt-8 flex flex-col gap-2 border-t border-line pt-5 text-[12px] leading-6 text-muted sm:flex-row sm:items-center sm:justify-between">
-          <span><b className="text-brown">{t.howItWorks.notes[0].label}</b> {t.howItWorks.notes[0].text}</span>
-          <span><b className="text-brown">{t.howItWorks.notes[1].label}</b> {t.howItWorks.notes[1].text}</span>
-        </div>
-      </section>
-    );
-  }
-
-  function Demo() {
-    return (
-      <section className="border-y border-line bg-paper" id="demo">
-        <div className="mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
-          <div className="max-w-2xl">
-            <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-orange">{t.demo.eyebrow}</p>
-            <h2 className={`text-4xl font-black leading-tight text-brown sm:text-5xl ${trackLg}`}>{t.demo.titleTop}<br /><span className="text-orange">{t.demo.titleAccent}</span></h2>
-            <p className="mt-5 text-[16px] leading-7 text-muted">{t.demo.lead}</p>
+      <section className="relative border-b border-ink/15 bg-paper" id="how-it-works">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-28">
+          <div className="max-w-xl">
+            <h2 className={`font-display ${headingWeight} ${sectionHeadingSize} leading-[0.95]`}>
+              <Overprint>{t.howItWorks.heading}</Overprint>
+            </h2>
+            <p className="mt-6 text-[16px] leading-7 text-ink">{t.howItWorks.lead}</p>
           </div>
-          <div className="mt-14 grid gap-4 md:grid-cols-3">
-            {clips.map((clip, i) => (
-              <article className="rounded-[1.5rem] border border-line bg-surface p-4" key={clip.src}>
-                {clip.ready ? (
-                  <video
-                    className="aspect-video w-full rounded-[1.1rem] border border-line bg-cream object-contain"
-                    src={clip.src}
-                    controls
-                    preload="metadata"
-                    playsInline
-                  />
-                ) : (
-                  <PetFeedDemo variant={clip.name} locale={locale} delaySeconds={i * -1.75} />
-                )}
-                <h3 className={`mt-5 text-[17px] font-black text-brown ${trackSm}`}>{t.demo.clips[i].title}</h3>
-                <p className="mt-2 text-[14px] leading-6 text-muted">{t.demo.clips[i].description}</p>
-              </article>
+
+          {/* Four parallel input methods, not a sequence — no 01-04 numerals implying order. */}
+          <ul className="mt-14 divide-y divide-ink/15 border-t border-ink/15">
+            {t.howItWorks.steps.map((step) => (
+              <li key={step.title} className="flex flex-col gap-2 py-7 sm:flex-row sm:items-baseline sm:gap-6">
+                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-ink sm:mt-2" aria-hidden="true" />
+                <div>
+                  <h3 className="text-[19px] font-bold tracking-[-0.01em] text-ink">{step.title}</h3>
+                  <p className="mt-2 max-w-2xl text-[14px] leading-6 text-muted">{step.description}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+
+          <div className="mt-10 flex flex-col gap-2 border-t border-ink/15 pt-6 text-[12px] leading-6 text-muted sm:flex-row sm:gap-10">
+            {t.howItWorks.notes.map((note) => (
+              <p key={note.label}>
+                <b className="text-ink">{note.label}.</b> {note.text}
+              </p>
             ))}
           </div>
         </div>
+        <Folio n="03" />
       </section>
     );
   }
 
   function Agents() {
     return (
-      <section className="bg-brown text-surface" id="agents">
-        <div className="mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
+      <section className="halftone-blue relative border-b border-ink/15 bg-overprint text-paper" id="agents">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-28">
           <div className="flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-            <div className="max-w-2xl">
-              <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-peach">{t.agents.eyebrow}</p>
-              <h2 className={`text-4xl font-black leading-tight sm:text-5xl ${trackLg}`}>{t.agents.titleTop}<br /><span className="text-peach">{t.agents.titleAccent}</span></h2>
-            </div>
-            <p className="max-w-sm text-[14px] leading-6 text-surface/65">{t.agents.lead}</p>
+            <h2 className={`font-display ${headingWeight} ${sectionHeadingSize} leading-[0.95] text-orange`}>{t.agents.heading}</h2>
+            <p className="max-w-sm text-[14px] leading-6 text-paper/70">{t.agents.lead}</p>
           </div>
-          <div className="mt-14 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+
+          <div className="mt-14 grid grid-cols-2 gap-x-6 gap-y-10 border-y border-paper/20 py-10 sm:grid-cols-4">
             {agents.map((agent) => (
-              <article className="rounded-[1.35rem] border border-surface/15 bg-surface/[0.08] p-4" key={agent.name}>
-                <AgentPetIcon agent={agent.name} className="mx-auto aspect-square w-2/3" />
-                <h3 className="mt-4 text-center text-[16px] font-black tracking-[-0.03em]">{agent.name}</h3>
-              </article>
+              <div className="flex flex-col items-center gap-3" key={agent.name}>
+                <AgentPetIcon agent={agent.name} className="aspect-square w-20" />
+                <span className="text-[14px] font-bold tracking-[-0.01em]">{agent.name}</span>
+              </div>
             ))}
           </div>
-          <p className="mt-8 text-[12px] leading-6 text-surface/55">{t.agents.disclaimer}</p>
+
+          <p className="mt-8 max-w-2xl text-[12px] leading-6 text-paper/70">{t.agents.disclaimer}</p>
         </div>
+        <Folio n="04" dark />
       </section>
     );
   }
 
   function Privacy() {
     return (
-      <section className="border-b border-line bg-paper" id="privacy">
-        <div className="mx-auto max-w-6xl px-6 py-24 lg:px-8 lg:py-32">
-          <div className="grid gap-14 lg:grid-cols-[0.8fr_1.2fr] lg:gap-24">
+      <section className="relative border-b border-ink/15 bg-paper" id="privacy">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-28">
+          <div className="grid gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-20">
             <div>
-              <p className="mb-5 text-[11px] font-bold uppercase tracking-[0.22em] text-orange">{t.privacy.eyebrow}</p>
-              <h2 className={`text-4xl font-black leading-tight text-brown sm:text-5xl ${trackLg}`}>{t.privacy.titleTop}<br />{t.privacy.titleBottom}</h2>
+              <h2 className={`font-display ${headingWeight} ${sectionHeadingSize} leading-[0.95]`}>
+                <Overprint>{t.privacy.heading}</Overprint>
+              </h2>
+              <p className="mt-6 max-w-sm text-[16px] leading-7 text-ink">{t.privacy.lead}</p>
             </div>
-            <div className="grid gap-3 sm:grid-cols-2">
-              <article className="rounded-[1.35rem] border border-line bg-surface p-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-orange">01 / no telemetry</p>
-                <h3 className="mt-8 text-[17px] font-black text-brown">{t.privacy.cards[0].title}</h3>
-                <p className="mt-2 text-[14px] leading-6 text-muted">{t.privacy.cards[0].description}</p>
-              </article>
-              <article className="rounded-[1.35rem] border border-line bg-surface p-5">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-orange">02 / selected only</p>
-                <h3 className="mt-8 text-[17px] font-black text-brown">{t.privacy.cards[1].title}</h3>
-                <p className="mt-2 text-[14px] leading-6 text-muted">{t.privacy.cards[1].description}</p>
-              </article>
-              <article className="rounded-[1.35rem] border border-line bg-surface p-5 sm:col-span-2">
-                <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-orange">03 / soul.md</p>
-                <h3 className="mt-8 text-[17px] font-black text-brown">{t.privacy.soul.title}</h3>
-                <p className="mt-2 text-[14px] leading-6 text-muted">{t.privacy.soul.before}<code className="break-all text-[12px] text-brown">~/Library/Application Support/YumYum/SOUL.md</code>{t.privacy.soul.after}</p>
-              </article>
-            </div>
+
+            <dl className="divide-y divide-ink/15 border-t border-ink/15">
+              {t.privacy.cards.map((card) => (
+                <div key={card.title} className="py-6">
+                  <dt className="text-[17px] font-bold text-ink">{card.title}</dt>
+                  <dd className="mt-2 text-[14px] leading-6 text-muted">{card.description}</dd>
+                </div>
+              ))}
+              <div className="py-6">
+                <dt className="text-[17px] font-bold text-ink">{t.privacy.soul.title}</dt>
+                <dd className="mt-2 text-[14px] leading-6 text-muted">
+                  {t.privacy.soul.before}
+                  <code className="break-all text-[12px] text-blue">~/Library/Application Support/YumYum/SOUL.md</code>
+                  {t.privacy.soul.after}
+                </dd>
+              </div>
+            </dl>
           </div>
-          <div className="mt-12 rounded-[1.5rem] bg-brown px-6 py-5 text-[14px] leading-7 text-surface sm:px-8">
-            <b className="text-peach">{t.privacy.bannerStrong}</b>{t.privacy.bannerRest}
-          </div>
+
+          <p className="mt-12 max-w-3xl text-[15px] leading-7 text-ink">
+            <b className="text-blue">{t.privacy.bannerStrong}</b>
+            {t.privacy.bannerRest}
+          </p>
         </div>
+        <Folio n="05" />
+      </section>
+    );
+  }
+
+  function Install() {
+    return (
+      <section className="relative border-b border-ink/15 bg-paper" id="install">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-28">
+          <h2 className={`font-display ${headingWeight} ${sectionHeadingSize} leading-[0.95]`}>
+            <Overprint>{t.install.heading}</Overprint>
+          </h2>
+
+          <ol className="mt-10 max-w-xl divide-y divide-ink/15 border-t border-ink/15">
+            {t.install.steps.map((step, i) => (
+              <li key={step} className="flex items-baseline gap-5 py-5">
+                <span className="font-display text-[15px] font-normal text-blue">0{i + 1}</span>
+                <p className="text-[15px] leading-6 text-ink">{step.replace(/^\d+\.\s*/, "")}</p>
+              </li>
+            ))}
+          </ol>
+
+          <p className="mt-6 max-w-xl border-t border-ink/15 pt-5 text-[12px] leading-6 text-muted">{t.install.releaseVerification}</p>
+
+          <p className="mt-6 max-w-xl text-[12px] font-bold text-muted">
+            {t.install.requirements} · {t.install.windowsNote} · {t.install.license}
+          </p>
+        </div>
+        <Folio n="06" />
       </section>
     );
   }
 
   function Footer() {
     return (
-      <footer className="bg-ink text-surface/65">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 lg:px-8">
-          <div className="flex flex-col justify-between gap-6 sm:flex-row sm:items-start">
+      <footer className="halftone-blue relative bg-overprint text-paper">
+        <div className="mx-auto max-w-6xl px-5 py-20 lg:px-8 lg:py-28">
+          <h2 className="font-display text-[clamp(2.2rem,9vw,5.5rem)] font-normal leading-[0.95]">
+            <Overprint dark>{t.footer.heading}</Overprint>
+          </h2>
+
+          <div className="mt-8">
+            <StampTicket href={release.url} dark>
+              {t.footer.cta}
+            </StampTicket>
+          </div>
+
+          <div className="mt-16 flex flex-col justify-between gap-6 border-t border-paper/20 pt-8 sm:flex-row sm:items-start">
             <div>
-              <p className="text-[17px] font-black tracking-[-0.04em] text-surface">YumYum <span className="text-peach">Agent</span></p>
-              <p className="mt-2 text-[13px]">{t.footer.tagline}</p>
-              <p className="mt-2 text-[11px] leading-5">{t.footer.attribution} <a className="text-surface transition-colors hover:text-peach" href="/images/AGENT-ICONS-SOURCES.md">{t.footer.attributionLink}</a></p>
+              <p className="font-display text-[17px] font-normal text-paper">
+                YumYum <span className="text-orange">Agent</span>
+              </p>
+              <p className="mt-2 text-[13px] text-paper/70">{t.footer.tagline}</p>
+              <p className="mt-2 max-w-sm text-[11px] leading-5 text-paper/70">
+                {t.footer.attribution}{" "}
+                <a
+                  className="inline-flex items-center gap-1 text-paper/80 underline underline-offset-4 transition-colors hover:text-paper"
+                  href="/images/AGENT-ICONS-SOURCES.md"
+                >
+                  {t.footer.attributionLink}
+                  <ExternalLinkIcon className="h-3 w-3" />
+                </a>
+              </p>
             </div>
-            <div className="flex gap-5 text-[13px] font-semibold">
-              <a className="transition-colors hover:text-surface" href="https://github.com/kyu91/yumyum-agent" target="_blank" rel="noreferrer">Repository ↗</a>
-              <a className="transition-colors hover:text-surface" href="https://github.com/kyu91/yumyum-agent/releases" target="_blank" rel="noreferrer">Releases ↗</a>
-              <a className="transition-colors hover:text-surface" href="https://haas.kr/posts/yumyum-agent-open-source-launch" target="_blank" rel="noreferrer">{t.footer.blogLabel}</a>
+            <div className="flex gap-5 text-[13px] font-bold">
+              <a
+                className="inline-flex items-center gap-1 transition-colors hover:text-orange"
+                href="https://github.com/kyu91/yumyum-agent"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Repository <ExternalLinkIcon className="h-3 w-3" />
+              </a>
+              <a
+                className="inline-flex items-center gap-1 transition-colors hover:text-orange"
+                href="https://github.com/kyu91/yumyum-agent/releases"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Releases <ExternalLinkIcon className="h-3 w-3" />
+              </a>
+              <a
+                className="inline-flex items-center gap-1 transition-colors hover:text-orange"
+                href="https://haas.kr/posts/yumyum-agent-open-source-launch"
+                target="_blank"
+                rel="noreferrer"
+              >
+                {t.footer.blogLabel} <ExternalLinkIcon className="h-3 w-3" />
+              </a>
             </div>
           </div>
-          <div className="border-t border-surface/10 pt-5 text-[11px] leading-5 text-surface/40">{t.footer.disclaimer}</div>
+
+          <p className="mt-8 max-w-2xl text-[11px] leading-5 text-paper/70">{t.footer.disclaimer}</p>
         </div>
+        <Folio n="07" dark />
       </footer>
     );
   }
@@ -325,11 +409,12 @@ export default async function Landing({ locale }: { locale: Locale }) {
   return (
     <main>
       {Nav()}
-      {Hero()}
+      {Cover()}
+      {Watch()}
       {HowItWorks()}
-      {Demo()}
       {Agents()}
       {Privacy()}
+      {Install()}
       {Footer()}
     </main>
   );

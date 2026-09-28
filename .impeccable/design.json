@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-28T17:08:58.650728+00:00",
+  "title": "Design System: YumYum Agent",
+  "extensions": {
+    "colorMeta": {
+      "riso-orange": {
+        "role": "primary",
+        "displayName": "Riso Orange",
+        "canonical": "#ff6c2f",
+        "tonalRamp": [
+          "#3d1405",
+          "#6b2409",
+          "#9c3610",
+          "#d14a18",
+          "#ff6c2f",
+          "#ff9468",
+          "#ffbc9f",
+          "#ffe4d7"
+        ]
+      },
+      "riso-blue": {
+        "role": "primary",
+        "displayName": "Riso Blue",
+        "canonical": "#0078bf",
+        "tonalRamp": [
+          "#001a2b",
+          "#002f4d",
+          "#004673",
+          "#005f99",
+          "#0078bf",
+          "#4a9fd4",
+          "#8fc3e5",
+          "#d3e8f5"
+        ]
+      },
+      "fluoro-pink": {
+        "role": "tertiary",
+        "displayName": "Fluoro Pink",
+        "canonical": "#ff48b0",
+        "tonalRamp": [
+          "#3d0a27",
+          "#6b1245",
+          "#9c1b65",
+          "#d12a88",
+          "#ff48b0",
+          "#ff7cc6",
+          "#ffafdb",
+          "#ffe0f1"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Offset Stock",
+        "canonical": "#ffffff",
+        "tonalRamp": [
+          "#262626",
+          "#474747",
+          "#6b6b6b",
+          "#919191",
+          "#b8b8b8",
+          "#dcdcdc",
+          "#f2f2f2",
+          "#ffffff"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Press Black",
+        "canonical": "#1a1a1a",
+        "tonalRamp": [
+          "#1a1a1a",
+          "#333333",
+          "#4d4d4d",
+          "#6b6b6b",
+          "#8c8c8c",
+          "#b0b0b0",
+          "#d6d6d6",
+          "#f2f2f2"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Slate Gray",
+        "canonical": "#38434a",
+        "tonalRamp": [
+          "#15191c",
+          "#252d31",
+          "#38434a",
+          "#525f67",
+          "#707d85",
+          "#949ea4",
+          "#bcc3c7",
+          "#e3e7e9"
+        ]
+      },
+      "overprint": {
+        "role": "neutral",
+        "displayName": "Overprint Green",
+        "canonical": "#003323",
+        "tonalRamp": [
+          "#001a12",
+          "#003323",
+          "#0a4d38",
+          "#1f6b53",
+          "#3d8c72",
+          "#6aae96",
+          "#a1cfbe",
+          "#d9eee6"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display-ko": {
+        "displayName": "Display (Korean)",
+        "purpose": "Cover headline on / only; two-plate overprint."
+      },
+      "display-en": {
+        "displayName": "Display (English)",
+        "purpose": "Cover headline on /en only; two-plate overprint."
+      },
+      "headline": {
+        "displayName": "Page Headline",
+        "purpose": "One per zine page; overprinted on paper, flat orange on overprint pages."
+      },
+      "title": {
+        "displayName": "Item Title",
+        "purpose": "List-item heads in How it works."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Leads and the cover subtitle."
+      },
+      "body-small": {
+        "displayName": "Body Small",
+        "purpose": "Descriptions in muted; bold for stamp-ticket text and agent names."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "12px bold meta lines, locale switch, feed instruction, signed-release line; regular notes."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Nav wordmark in the display face (18px); footer repeats it at 17px."
+      },
+      "title-sm": {
+        "displayName": "Title Small",
+        "purpose": "Privacy definition heads; cover subtitle from sm."
+      },
+      "body-md": {
+        "displayName": "Body Medium",
+        "purpose": "Install steps and numerals; privacy statement."
+      },
+      "caption": {
+        "displayName": "Caption",
+        "purpose": "Demo reply prompt and text, empty-log line, nav and footer links, footer tagline."
+      },
+      "label-sm": {
+        "displayName": "Label Small",
+        "purpose": "Folios, desktop clipping captions, Return key button, uppercase example/draft labels in the reply log."
+      },
+      "fine-print": {
+        "displayName": "Fine Print",
+        "purpose": "Footer attribution and disclaimer."
+      },
+      "label-xs": {
+        "displayName": "Label XS",
+        "purpose": "Compact mobile clipping captions only; 10px is the floor."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "print-snap",
+        "value": "420ms cubic-bezier(0.2, 0.9, 0.3, 1)",
+        "purpose": "Pet chew squash and registration-mark snap into register."
+      },
+      {
+        "name": "snap-back",
+        "value": "150-160ms ease-out",
+        "purpose": "Missed-drop clipping returns; pet slip scale/border state."
+      },
+      {
+        "name": "tint",
+        "value": "200ms opacity",
+        "purpose": "Pink halftone tint on the pet slip."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "all durations 0.001ms",
+        "purpose": "prefers-reduced-motion: reduce."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      }
+    ],
+    "textures": [
+      {
+        "name": "halftone-orange",
+        "value": "radial-gradient(rgba(255,108,47,0.55) 1.4px, transparent 1.4px) / 14px 14px",
+        "purpose": "Cover field on paper."
+      },
+      {
+        "name": "halftone-blue",
+        "value": "radial-gradient(rgba(0,120,191,0.45) 1.4px, transparent 1.4px) / 14px 14px",
+        "purpose": "Overprint pages."
+      },
+      {
+        "name": "halftone-pink",
+        "value": "radial-gradient(rgba(255,72,176,0.65) 1.6px, transparent 1.6px) / 12px 12px",
+        "purpose": "Active pet slip, multiply."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Stamp Ticket",
+      "kind": "button",
+      "refersTo": "stamp-ticket",
+      "description": "Primary download CTA: dashed ticket, stamped at -1deg.",
+      "html": "<a class=\"ds-stamp\" href=\"#\">macOS DMG <svg viewBox=\"0 0 16 16\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\"><path d=\"M6 4h6v6\"/><path d=\"M12 4 4 12\"/></svg></a>",
+      "css": ".ds-stamp{display:inline-flex;align-items:center;gap:12px;padding:12px 24px;border:2px dashed currentColor;color:#1a1a1a;font:700 14px 'Noto Sans KR',sans-serif;text-decoration:none;transform:rotate(-1deg);transition:transform .15s}.ds-stamp:hover{transform:rotate(0) translateY(-2px)}.ds-stamp:focus-visible{outline:2px solid #ff48b0;outline-offset:3px}"
+    },
+    {
+      "name": "Stamp Ticket (dark)",
+      "kind": "button",
+      "refersTo": "stamp-ticket-dark",
+      "description": "Same ticket on an overprint page.",
+      "html": "<div class=\"ds-ink-bg\"><a class=\"ds-stamp-d\" href=\"#\">Download</a></div>",
+      "css": ".ds-ink-bg{background:#003323;padding:24px}.ds-stamp-d{display:inline-flex;padding:12px 24px;border:2px dashed currentColor;color:#fff;font:700 14px 'Noto Sans KR',sans-serif;text-decoration:none;transform:rotate(-1deg);transition:transform .15s}.ds-stamp-d:hover{transform:rotate(0) translateY(-2px)}.ds-stamp-d:focus-visible{outline:2px solid #ff48b0;outline-offset:3px}"
+    },
+    {
+      "name": "Icon Square",
+      "kind": "button",
+      "refersTo": "icon-square",
+      "description": "Nav GitHub/download square; inverts on hover.",
+      "html": "<a class=\"ds-isq\" href=\"#\" aria-label=\"Download\"><svg viewBox=\"0 0 24 24\" width=\"16\" height=\"16\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3\"/></svg></a>",
+      "css": ".ds-isq{display:inline-flex;width:32px;height:32px;align-items:center;justify-content:center;border:2px solid #1a1a1a;color:#1a1a1a;background:#fff;transition:background .15s,color .15s}.ds-isq:hover{background:#1a1a1a;color:#fff}.ds-isq:focus-visible{outline:2px solid #ff48b0;outline-offset:3px}"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Sticky paper bar, wordmark, bold muted links, KO/EN switch.",
+      "html": "<nav class=\"ds-nav\"><span class=\"ds-wm\">YumYum <b>Agent</b></span><span class=\"ds-links\"><a href=\"#\">How it works</a><a href=\"#\">Agents</a><a href=\"#\">Privacy</a><span class=\"ds-lang\"><a class=\"on\" href=\"#\">KO</a> / <a href=\"#\">EN</a></span></span></nav>",
+      "css": ".ds-nav{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;background:#fff;border-bottom:1px solid rgba(26,26,26,.15)}.ds-wm{font:400 18px 'Black Han Sans',sans-serif;letter-spacing:-.02em;color:#1a1a1a}.ds-wm b{font-weight:400;color:#ff6c2f}.ds-links{display:flex;gap:24px;align-items:center;font:700 13px 'Noto Sans KR',sans-serif}.ds-links a{color:#38434a;text-decoration:none;text-underline-offset:4px}.ds-links a:hover{color:#1a1a1a;text-decoration:underline}.ds-lang{font-size:12px;color:rgba(26,26,26,.3)}.ds-lang a.on{color:#1a1a1a;text-decoration:underline}"
+    },
+    {
+      "name": "Overprint Headline",
+      "kind": "custom",
+      "refersTo": "headline",
+      "description": "Two misregistered plates, orange under blue, multiplied.",
+      "html": "<h2 class=\"ds-op\"><span class=\"ds-op-o\" aria-hidden=\"true\">지켜봐</span><span class=\"ds-op-b\">지켜봐</span></h2>",
+      "css": ".ds-op{position:relative;isolation:isolate;margin:0;font:400 64px/0.95 'Black Han Sans',sans-serif}.ds-op-o{position:absolute;inset:0;transform:translate(-0.09em,0.07em);color:#ff6c2f;mix-blend-mode:multiply}.ds-op-b{position:relative;display:block;color:#0078bf;mix-blend-mode:multiply}"
+    },
+    {
+      "name": "Clipping",
+      "kind": "custom",
+      "refersTo": "clipping",
+      "description": "Scissor-cut stapled paper scrap fed to the pet.",
+      "html": "<button class=\"ds-clip\"><svg class=\"ds-cut\" viewBox=\"0 0 100 100\" preserveAspectRatio=\"none\"><polygon points=\"2,6 18,0 40,3 63,0 84,4 100,0 97,22 100,45 96,68 100,88 82,100 58,97 34,100 12,96 0,100 3,74 0,48 4,24\" fill=\"#fff\" stroke=\"#1a1a1a\" stroke-width=\"2.5\" vector-effect=\"non-scaling-stroke\"/></svg><span class=\"ds-clip-in\"><svg viewBox=\"0 0 64 48\" width=\"56\" height=\"40\"><rect x=\"2\" y=\"2\" width=\"60\" height=\"44\" fill=\"#fff\" stroke=\"#1a1a1a\" stroke-width=\"2\"/><path d=\"M4 32 L20 16 L30 26 L44 10 L60 26\" fill=\"none\" stroke=\"#0078bf\" stroke-width=\"2\"/><circle cx=\"14\" cy=\"12\" r=\"4\" fill=\"#ff6c2f\"/></svg>Capture</span></button>",
+      "css": ".ds-clip{position:relative;width:112px;border:0;background:none;padding:0;cursor:grab;transform:rotate(-6deg);transition:transform .15s}.ds-clip:hover{transform:rotate(-6deg) translateY(-4px)}.ds-clip:focus-visible{outline:2px solid #ff48b0;outline-offset:3px}.ds-clip::before{content:'';position:absolute;top:-7px;left:18px;width:22px;height:10px;border:3px solid #1a1a1a;border-bottom:none;z-index:1}.ds-cut{position:absolute;inset:0;width:100%;height:100%}.ds-clip-in{position:relative;display:flex;flex-direction:column;align-items:center;gap:8px;padding:16px 12px;font:700 11px 'Noto Sans KR',sans-serif;color:#1a1a1a}"
+    },
+    {
+      "name": "Reply Log",
+      "kind": "card",
+      "refersTo": "reply-log",
+      "description": "Square-framed demo reply with example label and pink live square.",
+      "html": "<div class=\"ds-log\"><p class=\"ds-lbl\"><i></i>Example</p><p class=\"ds-q\">What's on this screen?</p><p class=\"ds-a\">A reply from your own CLI appears here.</p></div>",
+      "css": ".ds-log{max-width:320px;border:2px solid #1a1a1a;background:#fff;padding:16px;font-family:'Noto Sans KR',sans-serif}.ds-lbl{margin:0;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:#1a1a1a}.ds-lbl i{display:inline-block;width:6px;height:6px;margin-right:6px;background:#ff48b0;vertical-align:middle}.ds-q{margin:4px 0 0;font-size:13px;font-weight:700;color:#1a1a1a}.ds-a{margin:4px 0 0;font-size:13px;line-height:24px;color:#0078bf}"
+    },
+    {
+      "name": "Divided List",
+      "kind": "custom",
+      "refersTo": "list",
+      "description": "Hairline-divided items with square ink bullets; no cards.",
+      "html": "<ul class=\"ds-list\"><li><i></i><div><h3>Capture</h3><p>Right-click the pet and select a screen region.</p></div></li><li><i></i><div><h3>File drop</h3><p>Drag a file from Finder onto the pet.</p></div></li></ul>",
+      "css": ".ds-list{list-style:none;margin:0;padding:0;border-top:1px solid rgba(26,26,26,.15);font-family:'Noto Sans KR',sans-serif}.ds-list li{display:flex;gap:24px;align-items:baseline;padding:28px 0;border-bottom:1px solid rgba(26,26,26,.15)}.ds-list i{width:6px;height:6px;flex-shrink:0;background:#1a1a1a}.ds-list h3{margin:0;font-size:19px;font-weight:700;letter-spacing:-.01em;color:#1a1a1a}.ds-list p{margin:8px 0 0;font-size:14px;line-height:24px;color:#38434a}"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Riso Zine",
+    "overview": "The site is one thin riso-printed zine: white offset stock, two inks printed at page scale, and a cover pet the reader feeds by hand. Everything is a printed or pasted thing: display lines are two misregistered plates, content arrives as scissor-cut clippings held by a staple, frames are 2px ink rules, and every page ends in a folio. Density is low; each section is one page with one idea, separated by a hairline rule, not a card.\n\nMotion is print-like. Plates snap into register, a missed drop snaps back in 160ms, the pet chews on a short squash. Nothing floats or drifts. The only colour outside the two plates is fluorescent pink, and it means one thing: the feeding state is live.",
+    "keyCharacteristics": [
+      "Two riso plates (orange, blue) printed at page scale, overprinting to a dark multiply green.",
+      "Misregistered overprint display type; Korean in Black Han Sans, English in Bricolage Grotesque.",
+      "Square corners everywhere; 2px ink rules and 15%-ink hairlines instead of cards and shadows.",
+      "Scissor-cut clippings with a staple, halftone dot fields, page folios.",
+      "Fluorescent pink reserved for the active feeding state.",
+      "Print-like motion: snap, register, chew; no floaty easing."
+    ],
+    "rules": [
+      {
+        "name": "The Two Plates Rule",
+        "body": "Orange and blue are the only page-scale inks. A new accent is a new plate and a new world; ask first.",
+        "section": "colors"
+      },
+      {
+        "name": "The Pink Means Live Rule",
+        "body": "Fluorescent pink appears only for the active feeding/interactive state (plus selection and focus). Never as decoration or a section colour.",
+        "section": "colors"
+      },
+      {
+        "name": "The Overprint Ground Rule",
+        "body": "Dark pages use Overprint Green, never ink black or a gray, and carry the blue halftone field.",
+        "section": "colors"
+      },
+      {
+        "name": "The Honest Weight Rule",
+        "body": "Black Han Sans ships one weight; set it at 400 and never ask for bold. Bricolage takes 800.",
+        "section": "typography"
+      },
+      {
+        "name": "The Keep-All Rule",
+        "body": "Korean pages set word-break: keep-all; only file paths override with break-all.",
+        "section": "typography"
+      },
+      {
+        "name": "The Short Display Rule",
+        "body": "Overprint display is for a few words. Two stacked copies of a paragraph is not a headline.",
+        "section": "typography"
+      },
+      {
+        "name": "The One Page One Idea Rule",
+        "body": "A section is a zine page: one heading, one lead, one list or object, one folio.",
+        "section": "layout"
+      },
+      {
+        "name": "The Printed Depth Rule",
+        "body": "Depth comes from overprint, halftone and paste-up tilt, never from a shadow. An offset solid block behind an element is a hard shadow and is not allowed.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set every display heading as a two-plate overprint: orange offset (-0.09em, 0.07em) under blue, mix-blend-multiply on paper, mix-blend-screen on overprint pages.",
+      "Do keep all corners at 0px and frame with 2px ink or 15%-ink hairlines.",
+      "Do use print-like timing: 150–160ms snaps and the 420ms cubic-bezier(0.2, 0.9, 0.3, 1) chew/register; respect prefers-reduced-motion.",
+      "Do keep the focus ring 2px fluoro pink with 3px offset.",
+      "Do put the blue halftone field on every overprint page."
+    ],
+    "donts": [
+      "Don't use rounded cards, box shadows or surface gradients (the cover halftone's fade mask is the one sanctioned gradient, and only as a mask).",
+      "Don't use pink outside the active feeding state, selection and focus.",
+      "Don't fake a bold on Black Han Sans.",
+      "Don't recolour the mascot or the agent pet icons into the riso inks.",
+      "Don't add a third page-scale ink or a gray dark ground."
+    ]
+  }
+}
